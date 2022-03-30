@@ -13,7 +13,7 @@ public abstract class Paritition<T> {
     public Paritition( List<T> pivots, Set<T>  reference_objects ) {
     }
 
-    abstract public double f();
+    abstract public double f(T datum);
 
 
 }
