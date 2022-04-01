@@ -22,18 +22,20 @@ public class BitBlaster4P<T> extends AbstractBitBlaster<T> {
         super(data, reference_points, metric);
     }
 
-    public List<Partition<T>> createPartitions(DataSet<T> data, ReferencePointSet<T> reference_points) throws PartitionException {
+    @Override
+    public List<Partition<T>> createPartitions(DataSet<T> data, ReferencePointSet<T> reference_points, Metric<T> metric) throws PartitionException {
         List<Partition<T>> result = new ArrayList<>();
         // result.addAll( createSheetExclusions(data, reference_points ) ); // TODO
-        result.addAll( createBallExclusions(data, reference_points, ball_radii ) );
+        result.addAll( createBallExclusions(data, metric, reference_points, ball_radii ) );
         return result;
     }
 
-    public List<Partition<T>> createBallExclusions(DataSet<T> data, ReferencePointSet<T> reference_points, double[] ball_radii) throws PartitionException {
+    public List<Partition<T>> createBallExclusions(DataSet<T> data, Metric<T> metric, ReferencePointSet<T> reference_points, double[] ball_radii) throws PartitionException {
         List<Partition<T>> balls = new ArrayList<>();
         for (int i = 0; i < reference_points.size(); i++) {
             for (double radius : BitBlaster4P.ball_radii) {
-                BallPartition<T> ball_part = new BallPartition<T>( reference_points.getAsList(i), reference_points, radius );
+                List<Integer> reference_indices = new ArrayList<>(); reference_indices.add(i);
+                BallPartition<T> ball_part = new BallPartition<T>( reference_points.getAsList(i), reference_indices, metric, radius );
                 balls.add(ball_part);
             }
         }

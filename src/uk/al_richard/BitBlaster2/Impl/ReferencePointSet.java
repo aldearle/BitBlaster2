@@ -14,7 +14,7 @@ public class ReferencePointSet<T> extends DataSet<T> {
         this.metric = metric;
     }
 
-    public double[] filterDistancesLTT(T query, List<T> reference_points_in_solution, double threshold) {
+    public double[] distancesToROsAndCollectLTT(T query, List<T> reference_points_in_solution, double threshold) {
         return distancesToAndFilterLTT(query, this, metric, reference_points_in_solution, threshold);
     }
 }

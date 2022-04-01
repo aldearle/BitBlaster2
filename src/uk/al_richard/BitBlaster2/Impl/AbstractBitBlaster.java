@@ -19,16 +19,16 @@ public abstract class AbstractBitBlaster<T> {
         this.data = data;
         this.reference_points = reference_points;
         this.metric = metric;
-        this.partitions = createPartitions(data,reference_points);
+        this.partitions = createPartitions(data,reference_points,metric);
         this.datarep = new BitWiseRangeExclusions<T>(data,partitions);
     }
 
-    public abstract List<Partition<T>> createPartitions(DataSet<T> data, ReferencePointSet<T> reference_points) throws PartitionException;
+    public abstract List<Partition<T>> createPartitions(DataSet<T> data, ReferencePointSet<T> reference_points, Metric<T> metric) throws PartitionException;
 
     private List<T> query(T query, double threshold) {
 
         List<T> reference_points_in_solution = new ArrayList<>();
-        double[] distances_to_reference_objects = reference_points.filterDistancesLTT(query, reference_points_in_solution, threshold);
+        double[] distances_to_reference_objects = reference_points.distancesToROsAndCollectLTT(query, reference_points_in_solution, threshold);
 
         List<Integer> inclusions = new ArrayList<>();
         List<Integer> exclusions = new ArrayList<>();
@@ -40,7 +40,7 @@ public abstract class AbstractBitBlaster<T> {
 //            } else if (partition.mustBeOut(distances_to_reference_objects, threshold)) {
 //                exclusions.add(i);
 //            }
-            if( partition.fWithPrecomputedDistances(distances_to_reference_objects, query) < 0.0d ) { // WRONG PLACEHOLDER
+            if( partition.fWithprecomputedPivotDistances(distances_to_reference_objects, query) < 0.0d ) { // WRONG PLACEHOLDER
                 // TODO AL is here.
             }
         }
