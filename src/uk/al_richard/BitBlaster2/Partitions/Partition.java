@@ -1,38 +1,45 @@
-package uk.al_richard.BitBlaster2.AbstractInterfaces;
+package uk.al_richard.BitBlaster2.Partitions;
+
+import uk.al_richard.BitBlaster2.Impl.ReferencePointSet;
 
 import java.util.List;
-import java.util.Set;
 import java.util.function.ToDoubleBiFunction;
 
 /**
  * @param <T> the type of values being modelled
  *  This class represents the class of binary (?) partitions of a metric space
  */
-public abstract class Paritition<T> {
+public abstract class Partition<T> {
 
-    protected ToDoubleBiFunction<List<T>,T> f;
-    private final List<T> pivots;
-    private final Set<T> reference_objects;
+    protected ToDoubleBiFunction<List<T>,T> f_impl;
+    protected final List<T> pivots;
+    protected final ReferencePointSet<T> reference_objects;
+
+    // if f is wrapped in a function there is no way to get tau out of it.
+    // Does this mean that it should be a class?
 
     /**
      * Create a partition
      * @param pivots - the ordered list of pivots used to define the partition - may be 1 or 2 (or more?)
      * @param reference_objects - the set of reference objects which are used to define this partition
      **/
-//    public Paritition(List<T> pivots, Set<T> reference_objects ) {
-//    }
+    public Partition(List<T> pivots, ReferencePointSet<T> reference_objects ) {
+        this.pivots = pivots;
+        this.reference_objects = reference_objects;
+        // f is not initialised.
+    }
 
     /**
      * Could be this interface:
      * Create a partition
      * @param pivots - the ordered list of pivots used to define the partition - may be 1 or 2 (or more?)
      * @param reference_objects - the set of reference objects which are used to define this partition
-     * @param f a 'is in' function which determins if a datum is in the Partition or not
+     * @param f_impl a 'is in' function which determines if a datum is in the Partition or not
      */
-    public Paritition(List<T> pivots, Set<T> reference_objects, ToDoubleBiFunction<List<T>, T> f ) {
+    public Partition(List<T> pivots, ReferencePointSet<T> reference_objects, ToDoubleBiFunction<List<T>,T> f_impl ) {
         this.pivots = pivots;
         this.reference_objects = reference_objects;
-        this.f = f;
+        this.f_impl = f_impl;
     }
 
     /**
@@ -42,10 +49,16 @@ public abstract class Paritition<T> {
      * A positive value is outside the boundary
      * A negative value is inside the boundary
      */
-//    abstract public double f(T datum);
+    public abstract double f(T datum);
 
-    public double callF(T datum) {
-        return f.applyAsDouble( pivots,datum );
+    // Getters
+
+    public List<T> getPivots() {
+        return pivots;
+    }
+
+    public ReferencePointSet<T> getReferenceObjects() {
+        return reference_objects;
     }
 
 }

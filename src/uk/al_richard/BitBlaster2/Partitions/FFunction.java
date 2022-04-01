@@ -1,4 +1,4 @@
-package uk.al_richard.BitBlaster2.AbstractInterfaces;
+package uk.al_richard.BitBlaster2.Partitions;
 
 import java.util.List;
 import java.util.function.ToDoubleBiFunction;

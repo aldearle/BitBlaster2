@@ -35,7 +35,11 @@
     </repositories>
 
     <dependencies>
-
+        <dependency>
+            <groupId>MetricSpaceContext</groupId>
+            <artifactId>MetricSpaceContext</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
