@@ -1,0 +1,39 @@
+1. Perhaps the biggest question is what to do with the F function.
+   Look at  BallPartition it has two methods one which passes f in as f_impl:
+      public BallPartition(List<T> pivots, List<Integer> pivot_indexes, double radius, Metric<T> metric, ToDoubleBiFunction<double[],T> f_impl )
+   The other uses a static f_function (which could also be an ordinary method).
+      public BallPartition(List<T> pivots, List<Integer> pivot_indexes, Metric<T> metric, double radius)
+   It is not clear to me the best way of doing this.
+   This relates to point 2 and 4 below.
+
+2. Note the interface Partition<T>
+   This is clean except for the issue of tau.
+   If tau is inside a function - like the first option above we cannot extract it for diagostic purposes.
+   Partition might be better an interface with the constructors moved to factory?
+
+3. Note the methods fWithprecomputedPivotDistances(double[] distances, T datum) and f(T datum) in Partition<T>
+   These permit the f fuction to be abstrct in the impl actually as fWithprecomputedPivotDistances and a concrete f.
+   This is also messy and it is not clear to me the cleanest way to code this.
+
+4. It would be good if we had some kind of factories to create different implementations of, for example, BitBlaster4P
+   The old code had lots layered in which made it hard to understand what was going on.
+   We should try and keep the functionality separated.
+
+5. Another big issue is how to deal with trace.
+   We want/need various forms of trace for different experiments.
+   There is no clean way that I can think of to weave tracing into the code base.
+   This raises the issue of what this code base if actually for - I think we need a clean base that we can understand for experimentation.
+
+6. In the class Util/Distances the method distancesToAndFilterLTT is really messy.
+   It finds the distances to pivots and also side effects the results by adding to filtered_results.
+   This is an efficient way of including pivots that are less than threshold but horrid.
+   Note sure what to do.
+
+7. We need to decide what to do about equality and hash code etc. of all the Utility classes - in the old version sorting and eq went wrong due to this.
+   Such bugs are hard to find later.
+
+8. I think that the DataSet and ReferencePoint abstractions are good - see what you think.
+
+9. We need to be able to pass in policies - for example simple things like the radii of ball partitions.
+
+10. As the time of writing the code is incomplete - I was working on AbstractBitBlaster when I stopped and in particular how to encode query.
